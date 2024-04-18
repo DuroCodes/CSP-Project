@@ -63,7 +63,13 @@ def ask_player_char() -> str:
     return [color("X", Colors.red), color("O", Colors.blue)][["x", "o"].index(char)]
 
 
-def minimax(board: List[List[str]], maximizing: bool, depth: int, ai_char: str, human_char: str) -> int:
+def minimax(
+    board: List[List[str]],
+    maximizing: bool,
+    depth: int,
+    ai_char: str,
+    human_char: str
+) -> int:
     """
     Minimax algorithm for the AI to determine the best move
 
