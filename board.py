@@ -1,4 +1,4 @@
-from utils import color, colors
+from utils import color, Colors
 from tabulate import tabulate
 
 
@@ -14,11 +14,20 @@ def fill_box(board: list[list[str]], row: int, col: int, char: str) -> bool:
 
 
 def check_winner(board: list[list[str]]) -> str:
-    if check_win(board.copy(), color('X', colors.red)):
-        return color('X', colors.red)
+    """
+    Checks if there is a winner in the board
 
-    if check_win(board.copy(), color('O', colors.blue)):
-        return color('O', colors.blue)
+    Parameters:
+        `board (list[list[str]])`: The board to check
+
+    Returns:
+        `str`: The winner of the game ('X', 'O', 'T' or ' ' if no winner yet)
+    """
+    if check_win(board.copy(), color('X', Colors.red)):
+        return color('X', Colors.red)
+
+    if check_win(board.copy(), color('O', Colors.blue)):
+        return color('O', Colors.blue)
 
     filled = 0
     rows, cols = len(board), len(board[0])
@@ -48,6 +57,15 @@ def check_win(board: list[list[str]], char: str) -> bool:
 
 
 def transform_board(board: list[list[str]]) -> list[list[str]]:
+    """
+    Transforms the board to have numbers in empty boxes that correspond to the position of the box
+
+    Parameters:
+        `board (list[list[str]])`: The board to transform
+
+    Returns:
+        `list[list[str]]`: The transformed board
+    """
     new_board = []
     for i in range(len(board)):
         row = []

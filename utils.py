@@ -7,6 +7,17 @@ def clear_screen():
 
 
 def prompt(prompt: str, case_sensitive=False, parser: Callable[[str], bool] = lambda _: True, error_message="Invalid response, please try again.", retry=True, clear=True):
+    """
+    Parses the user's input, if the parser returns True, the function returns the response, otherwise it retries (if retry is True)
+
+    Parameters:
+        `prompt (str)`: The prompt to display to the user
+        `case_sensitive (bool)`: Whether the input should be case sensitive or not
+        `parser (Callable[[str], bool])`: A function that parses the user's input
+        `error_message (str)`: The error message to display if the parser returns False
+        `retry (bool)`: Whether to retry if the parser returns False
+        `clear (bool)`: Whether to clear the screen before retrying
+    """
     while True:
         response = input(prompt)
         if not case_sensitive:
@@ -21,7 +32,7 @@ def prompt(prompt: str, case_sensitive=False, parser: Callable[[str], bool] = la
             return response
 
 
-class colors:
+class Colors:
     reset = '\033[0m'
     bold = '\033[01m'
     disable = '\033[02m'
@@ -57,4 +68,4 @@ class colors:
 
 
 def color(text: str, color: str):
-    return f"{color}{text}{colors.reset}"
+    return f"{color}{text}{Colors.reset}"

@@ -1,4 +1,4 @@
-from utils import prompt, color, colors, clear_screen
+from utils import prompt, color, Colors, clear_screen
 from board import check_winner, create_board, fill_box, print_board
 from typing import List, Optional, Tuple
 
@@ -10,11 +10,36 @@ def num_to_arr(num: int, rows: int) -> List[int]:
 
 
 def arr_to_num(arr: List[int]) -> int:
+    """
+    Converts a 2D array to a 1D array
+
+    Parameters:
+        `arr (List[int])`: A 2D array representing the row and column
+
+    Returns:
+        `int`: The 1D array representation of the 2D array
+
+    Example:
+        `arr_to_num([1, 1]) -> 4`: Calculated as 1 * 3 + 1 + 1 = 4
+    """
     return arr[0] * len(arr) + arr[1] + 1
 
 
 def parse_player_move(board: List[List[str]], move: str) -> bool:
-   # Stops from crashing when the user inputs a non-integer
+    """
+    Parses the player's move and checks if it is valid
+
+    Parameters:
+        `board (List[List[str]])`: The current board
+        `move (str)`: The player's move
+
+    Returns:
+        `bool`: True if the move is valid, False otherwise
+
+    Example:
+        `parse_player_move([[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], "5") -> True`: The move is valid as the box is empty
+        `parse_player_move([[' ', ' ', 'X'], [' ', ' ', ' '], [' ', ' ', ' ']], "3") -> False`: The move is invalid as the box is already filled
+    """
     try:
         int(move)
     except ValueError:
@@ -25,19 +50,32 @@ def parse_player_move(board: List[List[str]], move: str) -> bool:
     return move.isdigit() and 1 <= int(move) <= 9 and board[move_arr[0]][move_arr[1]] == " "
 
 
-def ask_player_move(board: List[List[str]], player: str):
+def ask_player_move(board: List[List[str]], player: str) -> List[int]:
     move = prompt(f"[*] Your Move {player} -> (1-9)?: ", parser=lambda x: parse_player_move(
         board, x), error_message="Invalid move, please try again.")
     return num_to_arr(int(move), len(board))
 
 
-def ask_player_char():
+def ask_player_char() -> str:
     char = prompt("[*] Choose your character (X/O): ", parser=lambda x: x.lower()
                   in ["x", "o"], error_message="Invalid character, please try again.")
-    return [color("X", colors.red), color("O", colors.blue)][["x", "o"].index(char)]
+    return [color("X", Colors.red), color("O", Colors.blue)][["x", "o"].index(char)]
 
 
-def minimax(board: List[List[str]], maximizing: bool, depth: int, ai_char: str, human_char: str):
+def minimax(board: List[List[str]], maximizing: bool, depth: int, ai_char: str, human_char: str) -> int:
+    """
+    Minimax algorithm for the AI to determine the best move
+
+    Parameters:
+        `board (List[List[str]])`: The current board
+        `maximizing (bool)`: True if the AI is maximizing, False otherwise
+        `depth (int)`: The current depth of the tree
+        `ai_char (str)`: The AI's character (X/O)
+        `human_char (str)`: The human's character (X/O)
+    
+    Returns:
+        `int`: The best score for the move
+    """
     res = check_winner(board)
     rows, cols = len(board), len(board[0])
 
@@ -73,6 +111,17 @@ def minimax(board: List[List[str]], maximizing: bool, depth: int, ai_char: str, 
 
 
 def best_move(board: List[List[str]], ai_char: str, human_char: str) -> Optional[Tuple[int, int]]:
+    """
+    Determines the best move for the AI to make using the minimax algorithm
+
+    Parameters:
+        `board (List[List[str]])`: The current board
+        `ai_char (str)`: The AI's character (X/O)
+        `human_char (str)`: The human's character (X/O)
+    
+    Returns:
+        `Optional[Tuple[int, int]]`: The best move for the AI to make as a tuple of row and column
+    """
     best_score = -100
     best_move = None
     for i in range(len(board)):
@@ -92,14 +141,14 @@ def play(rows: int, cols: int):
     clear_screen()
     print("[*] Welcome to Tic Tac Toe! [*]")
 
-    chars = [color("X", colors.red), color("O", colors.blue)]
+    chars = [color("X", Colors.red), color("O", Colors.blue)]
 
     human = ask_player_char()
     ai = chars[1 - chars.index(human)]
     filled = 0
     winner = ' '
     ai_last_turn = 0
-    player_turn = human == color("X", colors.red)
+    player_turn = human == color("X", Colors.red)
 
     while filled < rows * cols:
         if player_turn:
