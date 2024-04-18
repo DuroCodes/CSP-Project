@@ -3,6 +3,7 @@ from typing import Callable
 
 
 def clear_screen():
+    "Uses `cls` on Windows and `clear` on Unix to clear the screen (since Windows is objectively worse than Unix)"
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
