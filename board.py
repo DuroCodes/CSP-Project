@@ -47,10 +47,12 @@ def check_win(board: list[list[str]], char: str) -> bool:
     rows = len(board)
 
     for i in range(rows):
-        if all(board[i][j] == char for j in range(rows)) or all(board[j][i] == char for j in range(rows)):
+        if all(board[i][j] == char for j in range(rows)) \
+                or all(board[j][i] == char for j in range(rows)):
             return True
 
-    if all(board[i][i] == char for i in range(rows)) or all(board[i][2 - i] == char for i in range(rows)):
+    if all(board[i][i] == char for i in range(rows)) \
+            or all(board[i][2 - i] == char for i in range(rows)):
         return True
 
     return False
@@ -58,7 +60,7 @@ def check_win(board: list[list[str]], char: str) -> bool:
 
 def transform_board(board: list[list[str]]) -> list[list[str]]:
     """
-    Transforms the board to have numbers in empty boxes that correspond to the position of the box
+    Transforms the board to have numbers in empty boxes for box position
 
     Parameters:
         `board (list[list[str]])`: The board to transform

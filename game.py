@@ -35,10 +35,6 @@ def parse_player_move(board: List[List[str]], move: str) -> bool:
 
     Returns:
         `bool`: True if the move is valid, False otherwise
-
-    Example:
-        `parse_player_move([[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], "5") -> True`: The move is valid as the box is empty
-        `parse_player_move([[' ', ' ', 'X'], [' ', ' ', ' '], [' ', ' ', ' ']], "3") -> False`: The move is invalid as the box is already filled
     """
     try:
         int(move)
@@ -47,18 +43,23 @@ def parse_player_move(board: List[List[str]], move: str) -> bool:
 
     move_arr = num_to_arr(int(move), len(board))
 
-    return move.isdigit() and 1 <= int(move) <= 9 and board[move_arr[0]][move_arr[1]] == " "
+    return move.isdigit() and 1 <= int(move) <= 9 \
+        and board[move_arr[0]][move_arr[1]] == " "
 
 
 def ask_player_move(board: List[List[str]], player: str) -> List[int]:
-    move = prompt(f"[*] Your Move {player} -> (1-9)?: ", parser=lambda x: parse_player_move(
-        board, x), error_message="Invalid move, please try again.")
+    move = prompt(f"[*] Your Move {player} -> (1-9)?: ",
+                  parser=lambda x: parse_player_move(board, x),
+                  error_message="Invalid move, please try again."
+                  )
     return num_to_arr(int(move), len(board))
 
 
 def ask_player_char() -> str:
-    char = prompt("[*] Choose your character (X/O): ", parser=lambda x: x.lower()
-                  in ["x", "o"], error_message="Invalid character, please try again.")
+    char = prompt("[*] Choose your character (X/O): ",
+                  parser=lambda x: x.lower() in ["x", "o"],
+                  error_message="Invalid character, please try again."
+                  )
     return [color("X", Colors.red), color("O", Colors.blue)][["x", "o"].index(char)]
 
 
@@ -72,7 +73,7 @@ def minimax(board: List[List[str]], maximizing: bool, depth: int, ai_char: str, 
         `depth (int)`: The current depth of the tree
         `ai_char (str)`: The AI's character (X/O)
         `human_char (str)`: The human's character (X/O)
-    
+
     Returns:
         `int`: The best score for the move
     """
@@ -110,7 +111,9 @@ def minimax(board: List[List[str]], maximizing: bool, depth: int, ai_char: str, 
     return best_score - depth
 
 
-def best_move(board: List[List[str]], ai_char: str, human_char: str) -> Optional[Tuple[int, int]]:
+def best_move(
+    board: List[List[str]], ai_char: str, human_char: str
+) -> Optional[Tuple[int, int]]:
     """
     Determines the best move for the AI to make using the minimax algorithm
 
@@ -118,9 +121,9 @@ def best_move(board: List[List[str]], ai_char: str, human_char: str) -> Optional
         `board (List[List[str]])`: The current board
         `ai_char (str)`: The AI's character (X/O)
         `human_char (str)`: The human's character (X/O)
-    
+
     Returns:
-        `Optional[Tuple[int, int]]`: The best move for the AI to make as a tuple of row and column
+        `Optional[Tuple[int, int]]`: The best move for the AI to make ([row, col])
     """
     best_score = -100
     best_move = None

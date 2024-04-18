@@ -3,13 +3,20 @@ from typing import Callable
 
 
 def clear_screen():
-    "Uses `cls` on Windows and `clear` on Unix to clear the screen (since Windows is objectively worse than Unix)"
+    "Uses `cls` on Windows and `clear` on Unix to clear the screen"
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def prompt(prompt: str, case_sensitive=False, parser: Callable[[str], bool] = lambda _: True, error_message="Invalid response, please try again.", retry=True, clear=True):
+def prompt(
+    prompt: str,
+    case_sensitive=False,
+    parser: Callable[[str], bool] = lambda _: True,
+    error_message="Invalid response, please try again.",
+    retry=True,
+    clear=True
+) -> str:
     """
-    Parses the user's input, if the parser returns True, the function returns the response, otherwise it retries (if retry is True)
+    Parses user input, if parser is True, the response is returned.
 
     Parameters:
         `prompt (str)`: The prompt to display to the user
